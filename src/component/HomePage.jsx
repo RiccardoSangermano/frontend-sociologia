@@ -1,27 +1,26 @@
-import React, { useState } from 'react'; 
-import { Link, useNavigate } from 'react-router-dom';
-import SearchBar from './SearchBar.jsx'; 
-import TheoryList from './TheoryList.jsx'; 
-import { FaGlobe } from 'react-icons/fa';
-import Navbar from 'react-bootstrap/Navbar';
-import Nav from 'react-bootstrap/Nav';
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import AppNavbar from './AppNavbar.jsx';
+import AppFooter from './AppFooter.jsx';
 import Container from 'react-bootstrap/Container';
+import Img from 'react-bootstrap/Image';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Button from 'react-bootstrap/Button';
+import '../assets/CustomStyles.css';
 
 const HomePage = () => {
-    const navigate = useNavigate(); 
+    const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState('');
     const [suggestions, setSuggestions] = useState([]);
     const [loadingSuggestions, setLoadingSuggestions] = useState(false);
 
-    
-
     const handleSearchTermChange = async (term) => {
-        setSearchTerm(term); 
+        setSearchTerm(term);
         if (term.length > 2 || term.length === 0) {
             setLoadingSuggestions(true);
             try {
                 const response = await fetch(`http://localhost:8080/api/theories?keyword=${encodeURIComponent(term)}`);
-
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
                 }
@@ -41,55 +40,51 @@ const HomePage = () => {
     const handleSelectSuggestion = (suggestion) => {
         setSearchTerm(suggestion);
         setSuggestions([]);
+        navigate(`/theories/${suggestion}`);
     };
 
     return (
-        <div>
-            
-            <Navbar expand="lg" className="bg-body-tertiary" data-bs-theme="dark">
-                <Container>
-                    <Navbar.Brand as={Link} to="/">
-                        <FaGlobe className="me-2" />
-                        Sociology
-                    </Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="me-auto">
-                            <Nav.Link as={Link} to="/">Home</Nav.Link>
-                            <Nav.Link as={Link} to="/">Chi siamo?</Nav.Link>
-                            <Nav.Link as={Link} to="/register">Registrati</Nav.Link>
-                            <Nav.Link as={Link} to="/">Log in</Nav.Link>
-                            </Nav>
+        <div className="d-flex flex-column min-vh-100 bg-body-tertiary" data-bs-theme="dark">
+            <AppNavbar
+                onSearchChange={handleSearchTermChange}
+                onSelectSuggestion={handleSelectSuggestion}
+                suggestions={suggestions}
+                loading={loadingSuggestions}
+                searchTerm={searchTerm}
+            />
 
-                       
-                        <div className="d-flex me-3">
-                            <SearchBar
-                                onSearchChange={handleSearchTermChange}
-                                suggestions={suggestions}
-                                onSelectSuggestion={handleSelectSuggestion}
-                                loading={loadingSuggestions}
+            <div className="flex-grow-1 d-flex flex-column">
+                <Container fluid className="flex-grow-1 p-0 d-flex">
+                    <Row className="flex-grow-1 w-100 g-0">
+                        <Col md={6} className="p-0">
+                            <Img
+                                src="/images/sociologia.jpg"
+                                alt="Immagine di Sociologia"
+                                className="w-100 h-100"
+                                style={{ objectFit: 'cover' }}
                             />
-                        </div>
-                        <Nav>
-                        </Nav>
-                    </Navbar.Collapse>
+                        </Col>
+                        <Col md={6} className="d-flex justify-content-center align-items-center p-4">
+                            <div className="text-center px-md-5 py-md-3">
+                                <h1 className="text-light mb-3 display-4">Benvenuto in Sociopedika!</h1>
+                                <p className="mb-4 lead text-muted">
+                                    L'obiettivo è quello di mostrare le principali teorie sociologiche, cercando di superare lo stazionamento teorico della disciplina e comprendere come diversi meccanismi sociali si presentano nella nostra vita.
+                                </p>
+                                <p className="mb-4 lead text-muted">
+                                    Iscriviti per visualizzare tutte le teorie e immergerti in questo mondo.
+                                </p>
+                                <Link to="/register">
+                                    <Button variant="outline-light" size="lg" className="mt-3 btn-custom-register">
+                                        Registrati Ora
+                                    </Button>
+                                </Link>
+                            </div>
+                        </Col>
+                    </Row>
                 </Container>
-            </Navbar>
-
-            <div className="container mt-4">
-                <Container className="mt-3 text-center">
-                    <img
-                        src="/images/sociologia.jpg"
-                        alt="Immagine di Sociologia"
-                        className="img-fluid"
-                        style={{ maxWidth: '100%', height: 'auto' }}
-                    />
-                </Container>
-
-                <h1 className="mt-4 text-center">Benvenuto nella Sociopedia!</h1>
-                <p className="text-center mb-4">Esplora le principali teorie sociologiche e scopri il mondo della sociologia.</p>
-                <TheoryList searchTerm={searchTerm} />
             </div>
+
+            <AppFooter />
         </div>
     );
 };

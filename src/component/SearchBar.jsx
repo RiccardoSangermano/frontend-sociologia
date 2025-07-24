@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Form from 'react-bootstrap/Form';
 import FormControl from 'react-bootstrap/FormControl';
@@ -7,33 +7,14 @@ import InputGroup from 'react-bootstrap/InputGroup';
 import Spinner from 'react-bootstrap/Spinner'; 
 
 
-const SearchBar = ({ onSearchChange, suggestions, onSelectSuggestion, loading }) => {
+const SearchBar = ({ searchTerm, onSearchChange, suggestions, onSelectSuggestion, loading }) => {
   const navigate = useNavigate();
-  const [inputValue, setInputValue] = useState('');
-  const [showSuggestions, setShowSuggestions] = useState(false);
-
-  const handleInputChange = (event) => {
-    const term = event.target.value;
-    setInputValue(term);
-    onSearchChange(term);
-    setShowSuggestions(term.length > 0 && suggestions && suggestions.length > 0 && !loading);
-  };
 
   const handleSuggestionClick = (suggestion) => {
-    setInputValue(suggestion);
-    onSearchChange(suggestion); 
     onSelectSuggestion(suggestion);
-    setShowSuggestions(false);
   };
 
-  const handleFocus = () => {
-
-    setShowSuggestions(inputValue.length > 0 && suggestions && suggestions.length > 0 && !loading);
-  };
-
-  const handleBlur = () => {
-    setTimeout(() => setShowSuggestions(false), 100);
-  };
+  const showSuggestions = searchTerm?.length > 0 && suggestions && suggestions.length > 0 && !loading;
 
   return (
     <Form className="d-flex position-relative me-2">
@@ -42,10 +23,8 @@ const SearchBar = ({ onSearchChange, suggestions, onSelectSuggestion, loading })
           type="search"
           placeholder="Cerca teorie, autori..."
           aria-label="Search"
-          value={inputValue}
-          onChange={handleInputChange}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
+          value={searchTerm}
+          onChange={(e) => onSearchChange(e.target.value)}
           disabled={loading} 
         />
         {loading && ( 
@@ -55,7 +34,7 @@ const SearchBar = ({ onSearchChange, suggestions, onSelectSuggestion, loading })
         )}
       </InputGroup>
 
-      {showSuggestions && suggestions && suggestions.length > 0 && (
+      {showSuggestions && (
         <ListGroup
           className="position-absolute"
           style={{

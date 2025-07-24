@@ -1,0 +1,9 @@
+.theory-card-hover {
+    cursor: pointer;
+    transition: transform 0.3s ease-in-out; 
+  }
+  
+ 
+  .theory-card-hover:hover {
+    transform: scale(1.03); 
+  }

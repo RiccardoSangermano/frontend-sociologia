@@ -1,12 +1,10 @@
-// src/component/TheoryList.jsx
-
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'; 
-import Card from 'react-bootstrap/Card'; 
-import ListGroup from 'react-bootstrap/ListGroup';
+import { Link } from 'react-router-dom';
+import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import '../assets/TheoryList.css'; 
 
 const TheoryList = ({ searchTerm }) => {
   console.log("TheoryList component is rendering!");
@@ -74,25 +72,17 @@ const TheoryList = ({ searchTerm }) => {
       <Row xs={1} md={2} lg={3} className="g-4">
         {theories.map(theory => (
           <Col key={theory.id}>
-            <Link 
-              to={`/theories/${theory.id}`} 
-              style={{ textDecoration: 'none', color: 'inherit' }} 
+            <Link
+              to={`/theories/${theory.id}`}
+              style={{ textDecoration: 'none', color: 'inherit' }}
             >
-              <Card className="h-100 shadow-sm" style={{ cursor: 'pointer' }}> 
+              <Card className="h-100 shadow-sm theory-card-hover"> 
                 <Card.Body>
                   <Card.Title>{theory.nomeTeoria}</Card.Title>
                   <Card.Text>
-                    {theory.descrizioneBreve || "Nessuna descrizione disponibile."}
+                    {theory.spiegazioneBreve || theory.autore || "Nessuna descrizione disponibile."}
                   </Card.Text>
-                  </Card.Body>
-                <ListGroup className="list-group-flush">
-                  <ListGroup.Item>
-                    <strong>Autore:</strong> {theory.autore || "Sconosciuto"}
-                  </ListGroup.Item>
-                  <ListGroup.Item>
-                    <strong>Periodo:</strong> {theory.periodo || "Non specificato"}
-                  </ListGroup.Item>
-                </ListGroup>
+                </Card.Body>
               </Card>
             </Link>
           </Col>

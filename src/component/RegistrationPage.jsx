@@ -4,6 +4,11 @@ import Container from 'react-bootstrap/Container';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Img from 'react-bootstrap/Image';
+import { FaGlobe } from 'react-icons/fa';
+import "../assets/Form.css";
 
 const RegistrationPage = () => {
     const [username, setUsername] = useState('');
@@ -30,7 +35,7 @@ const RegistrationPage = () => {
             username: username,
             email: email,
             password: password,
-            ruoli: ["ROLE_USERS"] 
+            roles: ["ROLE_USER"] 
         };
 
         try {
@@ -55,7 +60,7 @@ const RegistrationPage = () => {
 
                 setSuccessMessage(message);
                 setTimeout(() => {
-                    navigate('/login'); 
+                    navigate('/login');
                 }, 2000);
             } else {
                 const errorText = await response.text();
@@ -78,69 +83,92 @@ const RegistrationPage = () => {
     };
 
     return (
-        <Container style={{ maxWidth: '500px', margin: '50px auto', padding: '20px', border: '1px solid #ccc', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-            <h2 className="text-center mb-4">Registrazione Utente</h2>
-            <Form onSubmit={handleSubmit}>
-                {successMessage && <Alert variant="success">{successMessage}</Alert>}
-                {error && <Alert variant="danger">{error}</Alert>}
+        <div className="bg-body-tertiary text-light min-vh-100 d-flex flex-column" data-bs-theme="dark">
+            <Container fluid className="flex-grow-1 p-0 d-flex">
+                <Row className="flex-grow-1 w-100 g-0">
+                    <Col md={6} className="d-none d-md-block p-0 auth-image-column">
+                        <Img
+                            src="/images/sociologia.jpg"
+                            alt="Immagine di Sociologia"
+                            className="w-100 h-100"
+                            style={{ objectFit: 'cover' }} 
+                        />
+                    </Col>
 
-                <Form.Group className="mb-3" controlId="formUsername">
-                    <Form.Label>Username</Form.Label>
-                    <Form.Control
-                        type="text"
-                        placeholder="Inserisci username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        required
-                        minLength="5"
-                        maxLength="30"
-                    />
-                     <Form.Text className="text-muted">Min. 5, Max. 30 caratteri.</Form.Text>
-                </Form.Group>
+                    <Col md={6} className="d-flex justify-content-center align-items-center">
+                        <div className="auth-page-container">
+                            <div className="auth-form-content">
+                                <Link to="/" className="text-decoration-none text-light mb-4 d-flex justify-content-center">
+                                    <h1 className="mb-0">
+                                        <FaGlobe size={40} className="me-2" /> Sociopedika
+                                    </h1>
+                                </Link>
 
-                <Form.Group className="mb-3" controlId="formEmail">
-                    <Form.Label>Email</Form.Label>
-                    <Form.Control
-                        type="email"
-                        placeholder="Inserisci email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        required
-                    />
-                </Form.Group>
+                                <h2 className="text-center mb-4">Registrazione Utente</h2>
+                                <Form onSubmit={handleSubmit}>
+                                    {successMessage && <Alert variant="success">{successMessage}</Alert>}
+                                    {error && <Alert variant="danger">{error}</Alert>}
 
-                <Form.Group className="mb-3" controlId="formPassword">
-                    <Form.Label>Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        placeholder="Inserisci password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                        minLength="8"
-                    />
-                     <Form.Text className="text-muted">Min. 8 caratteri.</Form.Text>
-                </Form.Group>
+                                    <Form.Group className="mb-3" controlId="formUsername">
+                                        <Form.Label>Username</Form.Label>
+                                        <Form.Control
+                                            type="text"
+                                            placeholder="Inserisci username"
+                                            value={username}
+                                            onChange={(e) => setUsername(e.target.value)}
+                                            required
+                                            minLength="5"
+                                            maxLength="30"
+                                        />
+                                    </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formConfirmPassword">
-                    <Form.Label>Conferma Password</Form.Label>
-                    <Form.Control
-                        type="password"
-                        placeholder="Conferma password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                        required
-                    />
-                </Form.Group>
+                                    <Form.Group className="mb-3" controlId="formEmail">
+                                        <Form.Label>Email</Form.Label>
+                                        <Form.Control
+                                            type="email"
+                                            placeholder="Inserisci email"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            required
+                                        />
+                                    </Form.Group>
 
-                <Button variant="primary" type="submit" className="w-100" disabled={loading}>
-                    {loading ? 'Registrazione in corso...' : 'Registrati'}
-                </Button>
-            </Form>
-            <p className="mt-3 text-center">
-                Hai già un account? <Link to="/login">Accedi qui</Link>
-            </p>
-        </Container>
+                                    <Form.Group className="mb-3" controlId="formPassword">
+                                        <Form.Label>Password</Form.Label>
+                                        <Form.Control
+                                            type="password"
+                                            placeholder="Inserisci password"
+                                            value={password}
+                                            onChange={(e) => setPassword(e.target.value)}
+                                            required
+                                            minLength="8"
+                                        />
+                                    </Form.Group>
+
+                                    <Form.Group className="mb-3" controlId="formConfirmPassword">
+                                        <Form.Label>Conferma Password</Form.Label>
+                                        <Form.Control
+                                            type="password"
+                                            placeholder="Conferma password"
+                                            value={confirmPassword}
+                                            onChange={(e) => setConfirmPassword(e.target.value)}
+                                            required
+                                        />
+                                    </Form.Group>
+
+                                    <Button variant="dark" type="submit" className="w-100" disabled={loading}>
+                                        {loading ? 'Registrazione in corso...' : 'Registrati'}
+                                    </Button>
+                                </Form>
+                                <p className="mt-3 text-center">
+                                    Hai già un account? <Link to="/login">Accedi qui</Link>
+                                </p>
+                            </div>
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
+        </div>
     );
 };
 
