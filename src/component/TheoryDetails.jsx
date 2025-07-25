@@ -54,7 +54,7 @@ const TheoryDetails = () => {
           if (theoryResponse.status === 404) {
               throw new Error("Teoria non trovata."); 
           }
-          throw new Error(`Errore HTTP: ${theoryResponse.status} - ${theoryResponse.statusText}`); // Errore generico HTTP
+          throw new Error(`Errore HTTP: ${theoryResponse.status} - ${theoryResponse.statusText}`); 
         }
         const theoryData = await theoryResponse.json(); 
         setTheory(theoryData); 
