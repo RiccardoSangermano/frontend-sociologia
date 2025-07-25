@@ -11,7 +11,7 @@ const NotFoundPage = () => {
       className="d-flex justify-content-center align-items-center text-center" 
       style={{
         minHeight: '100vh',
-        backgroundColor: 'rgba(52, 58, 64, 0.7);  ',
+        backgroundColor: 'black',
         color: 'white',
       }}
     >
